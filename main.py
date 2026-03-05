@@ -23,6 +23,7 @@ from agents.technical_agent import TechnicalAgent
 from agents.liquidity_agent import LiquidityAgent
 from agents.sentiment_agent import SentimentAgent
 from agents.arbitrage_agent import ArbitrageAgent
+from agents.discovery_agent import DiscoveryAgent
 from consensus.colony_brain import ColonyBrain
 from execution.trader       import ColonyTrader
 
@@ -125,6 +126,25 @@ async def main(simulate: bool = False):
 
     await brain.connect()
     await trader.connect()
+
+    # Initialize discovery agent
+    async def add_discovered_token(token_config: dict):
+        """Callback for when discovery agent finds a new token."""
+        logger.success(
+            f"[DISCOVERY] 🆕 Adding {token_config['symbol']} to swarm! "
+            f"TVL=${token_config.get('_tvl', 0):,.0f} "
+            f"Growth={token_config.get('_volume_growth', 0):.0%}"
+        )
+        TRACKED_TOKENS.append(token_config)
+
+    # Seed discovery agent with existing tokens to avoid duplicates
+    existing_addresses = [t["address"] for t in TRACKED_TOKENS]
+    discovery = DiscoveryAgent(on_new_token=add_discovered_token, scan_interval_seconds=300)
+    discovery.seed_known(existing_addresses)
+    
+    # Start discovery agent in background
+    asyncio.create_task(discovery.run_forever())
+    logger.info("[DISCOVERY] Scout agent launched — scanning Aerodrome every 5 minutes")
 
     cycle = 0
     while True:
