@@ -177,6 +177,33 @@
   .badge-hold   { background: rgba(250,204,21,0.10); color: var(--yellow); border: 1px solid rgba(250,204,21,0.2); }
   .badge-exec   { background: rgba(245,166,35,0.2);  color: var(--amber); border: 1px solid var(--amber-dim); }
 
+  /* Fund button */
+  .fund-btn {
+    background: linear-gradient(135deg, var(--amber) 0%, #d4881a 100%);
+    color: var(--bg);
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .fund-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(245,166,35,0.4);
+  }
+
+  .fund-btn:active {
+    transform: translateY(0);
+  }
+
   /* Developer credit hover effects */
   a[href*="x.com"]:hover span { border-bottom-color: var(--amber); }
   a[href*="github.com"]:hover { color: var(--amber); }
@@ -334,6 +361,10 @@
       </div>
       <div id="clock">--:--:--</div>
       <div>BASE MAINNET</div>
+      <button class="fund-btn" onclick="openOnramp()">
+        <span>💰</span>
+        <span>Fund Treasury</span>
+      </button>
     </div>
   </div>
 
@@ -667,6 +698,36 @@ setTimeout(() => log('Swarm initialized — 5 castes active', 'info'), 2400);
 // Start simulation cycles
 setTimeout(() => simulateCycle(), 3000);
 setInterval(simulateCycle, 8000);
+
+// ── Coinbase Onramp Integration ───────────────────────────────────────
+function openOnramp() {
+  // Treasury wallet address (replace with your actual treasury address from .env)
+  const treasuryAddress = 'YOUR_TREASURY_ADDRESS_HERE';
+  
+  // Coinbase Onramp URL with parameters
+  const onrampURL = new URL('https://pay.coinbase.com/buy/select-asset');
+  onrampURL.searchParams.append('appId', 'ant-colony-finance');
+  onrampURL.searchParams.append('destinationWallets', JSON.stringify([{
+    address: treasuryAddress,
+    blockchains: ['base'],
+    assets: ['ETH', 'USDC']
+  }]));
+  onrampURL.searchParams.append('defaultNetwork', 'base');
+  
+  // Open in new window
+  const width = 500;
+  const height = 700;
+  const left = (screen.width - width) / 2;
+  const top = (screen.height - height) / 2;
+  
+  window.open(
+    onrampURL.toString(),
+    'CoinbaseOnramp',
+    `width=${width},height=${height},left=${left},top=${top},resizable=yes,scrollbars=yes`
+  );
+  
+  log('💰 Onramp widget opened — fund colony treasury', 'info');
+}
 </script>
 </body>
 </html>

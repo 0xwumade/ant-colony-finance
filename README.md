@@ -84,7 +84,14 @@ python main.py
 
 ### 6. Open the dashboard
 
-Open `dashboard/index.html` in your browser for live monitoring.
+```bash
+# Serve with treasury address injected from .env
+python serve_dashboard.py
+# Then open http://localhost:8000
+
+# Or open the HTML directly (you'll need to manually set treasury address)
+# Open index.html in your browser
+```
 
 ---
 
@@ -95,7 +102,15 @@ This project qualifies for the [Coinbase Developer Platform Builder Grants](http
 - ✅ Built on Base network
 - ✅ Uses CDP Wallet API for treasury management
 - ✅ Onchain contract (AntColonyFinance.sol) logs all decisions
-- ✅ Consumer-facing dashboard
+- ✅ Consumer-facing dashboard with Coinbase Onramp integration
+- ✅ One-click treasury funding via "Fund Treasury" button
+
+### Coinbase Onramp Integration
+
+The dashboard includes a "Fund Treasury" button that opens Coinbase Onramp, allowing users to:
+- Purchase ETH or USDC with fiat (credit card, bank transfer)
+- Funds sent directly to the colony treasury wallet on Base
+- No manual wallet setup required for new users
 
 ---
 
@@ -118,6 +133,7 @@ ant-colony-finance/
 │   └── AntColonyFinance.sol # Onchain audit log
 ├── dashboard/
 │   └── index.html           # Live monitoring UI
+├── serve_dashboard.py       # Dashboard server with env injection
 ├── tests/
 │   └── test_consensus.py    # Unit tests
 ├── config/
