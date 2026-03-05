@@ -213,4 +213,3 @@ class ColonyTrader:
             confidence * (settings.MAX_TRADE_SIZE_ETH - settings.MIN_TRADE_SIZE_ETH)
         )
         return round(min(max(raw, settings.MIN_TRADE_SIZE_ETH), settings.MAX_TRADE_SIZE_ETH), 6)
-

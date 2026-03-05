@@ -177,37 +177,6 @@
   .badge-hold   { background: rgba(250,204,21,0.10); color: var(--yellow); border: 1px solid rgba(250,204,21,0.2); }
   .badge-exec   { background: rgba(245,166,35,0.2);  color: var(--amber); border: 1px solid var(--amber-dim); }
 
-  /* Fund button */
-  .fund-btn {
-    background: linear-gradient(135deg, var(--amber) 0%, #d4881a 100%);
-    color: var(--bg);
-    border: none;
-    padding: 8px 16px;
-    border-radius: 6px;
-    font-size: 11px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-
-  .fund-btn:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(245,166,35,0.4);
-  }
-
-  .fund-btn:active {
-    transform: translateY(0);
-  }
-
-  /* Developer credit hover effects */
-  a[href*="x.com"]:hover span { border-bottom-color: var(--amber); }
-  a[href*="github.com"]:hover { color: var(--amber); }
-
   /* Caste breakdown bars */
   .caste-row {
     display: flex;
@@ -361,10 +330,6 @@
       </div>
       <div id="clock">--:--:--</div>
       <div>BASE MAINNET</div>
-      <button class="fund-btn" onclick="openOnramp()">
-        <span>💰</span>
-        <span>Fund Treasury</span>
-      </button>
     </div>
   </div>
 
@@ -478,22 +443,145 @@
 
   </div>
 
-  <!-- Developer Credit -->
-  <div style="position: fixed; bottom: 16px; right: 16px; font-size: 11px; color: var(--muted); display: flex; align-items: center; gap: 12px; z-index: 100;">
-    <span>Built by</span>
-    <a href="https://x.com/0xwumade" target="_blank" rel="noopener noreferrer" style="color: var(--amber); font-weight: 700; text-decoration: none; display: flex; align-items: center; gap: 4px; transition: opacity 0.2s;">
-      <span style="color: var(--amber);">⚡</span>
-      <span style="border-bottom: 1px solid transparent;">wumade</span>
-    </a>
-    <span style="color: var(--border);">|</span>
-    <a href="https://github.com/0xwumade" target="_blank" rel="noopener noreferrer" style="color: var(--muted); text-decoration: none; transition: color 0.2s;">
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" style="vertical-align: middle;">
-        <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
-      </svg>
-    </a>
-  </div>
+  <!-- ── Onramp + CDP Grant Banner ───────────────────────────── -->
+  <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:16px;">
 
+    <!-- Fund Treasury via Coinbase Onramp -->
+    <div class="card" style="border-color: rgba(245,166,35,0.4);">
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:16px;">
+        <div>
+          <div class="card-label">Fund Colony Treasury</div>
+          <div style="font-family:'Syne',sans-serif; font-size:18px; font-weight:800; color:var(--amber); margin-top:4px;">
+            Coinbase Onramp
+          </div>
+          <div style="font-size:11px; color:var(--muted); margin-top:4px; line-height:1.6;">
+            Deposit USDC directly from fiat into the<br>
+            colony treasury. Powered by Coinbase.<br>
+            <span style="color:var(--green);">✓ USDC on Base is free to buy & transfer</span>
+          </div>
+        </div>
+        <div style="font-size:28px; opacity:0.6;">💳</div>
+      </div>
+
+      <!-- Wallet address input -->
+      <div style="margin-bottom:12px;">
+        <div style="font-size:10px; color:var(--muted); text-transform:uppercase; letter-spacing:1.5px; margin-bottom:6px;">
+          Treasury Wallet Address
+        </div>
+        <input
+          id="onramp-address"
+          type="text"
+          placeholder="0xYourTreasuryAddress"
+          style="
+            width:100%; padding:8px 10px;
+            background:var(--bg); border:1px solid var(--border);
+            border-radius:4px; color:var(--text);
+            font-family:'Space Mono',monospace; font-size:11px;
+            outline:none;
+          "
+        />
+      </div>
+
+      <!-- Amount selector -->
+      <div style="display:flex; gap:8px; margin-bottom:14px;">
+        <div style="font-size:10px; color:var(--muted); text-transform:uppercase; letter-spacing:1.5px; margin-bottom:6px; grid-column:1/-1; width:100%;">Quick amounts</div>
+      </div>
+      <div style="display:flex; gap:8px; margin-bottom:14px;" id="amount-btns">
+        <button onclick="setAmount(50)"   class="amt-btn">$50</button>
+        <button onclick="setAmount(100)"  class="amt-btn">$100</button>
+        <button onclick="setAmount(250)"  class="amt-btn amt-selected">$250</button>
+        <button onclick="setAmount(500)"  class="amt-btn">$500</button>
+      </div>
+
+      <button onclick="openOnramp()" style="
+        width:100%; padding:11px;
+        background: linear-gradient(135deg, #f5a623, #e8940f);
+        border:none; border-radius:6px;
+        font-family:'Syne',sans-serif; font-size:14px; font-weight:800;
+        color:#0a0a06; cursor:pointer; letter-spacing:0.5px;
+        transition: opacity 0.2s;
+      " onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
+        ⚡ FUND TREASURY WITH COINBASE
+      </button>
+
+      <div style="font-size:10px; color:var(--muted); text-align:center; margin-top:8px;">
+        Opens Coinbase secure checkout · KYC handled by Coinbase
+      </div>
+    </div>
+
+    <!-- CDP Grant Status -->
+    <div class="card" style="border-color:rgba(74,222,128,0.25);">
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:16px;">
+        <div>
+          <div class="card-label">CDP Builder Grant Readiness</div>
+          <div style="font-family:'Syne',sans-serif; font-size:18px; font-weight:800; color:var(--green); margin-top:4px;">
+            4 / 5 Complete
+          </div>
+        </div>
+        <div style="font-size:28px;">🏆</div>
+      </div>
+
+      <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:16px;">
+        <div class="grant-row">
+          <span class="grant-check green">✓</span>
+          <span class="grant-label">Built on Base network</span>
+          <span class="grant-status done">DONE</span>
+        </div>
+        <div class="grant-row">
+          <span class="grant-check green">✓</span>
+          <span class="grant-label">AI agent swarm (autonomous)</span>
+          <span class="grant-status done">DONE</span>
+        </div>
+        <div class="grant-row">
+          <span class="grant-check green">✓</span>
+          <span class="grant-label">CDP Swap API integration</span>
+          <span class="grant-status done">DONE</span>
+        </div>
+        <div class="grant-row">
+          <span class="grant-check green">✓</span>
+          <span class="grant-label">Onchain audit contract</span>
+          <span class="grant-status done">DONE</span>
+        </div>
+        <div class="grant-row">
+          <span class="grant-check amber">○</span>
+          <span class="grant-label">Coinbase Onramp integrated</span>
+          <span class="grant-status pending">CONFIGURE</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
 </div>
+
+<style>
+  .amt-btn {
+    flex:1; padding:7px 4px;
+    background:var(--border); border:1px solid var(--border);
+    border-radius:4px; color:var(--muted);
+    font-family:'Space Mono',monospace; font-size:11px;
+    cursor:pointer; transition:all 0.15s;
+  }
+  .amt-btn:hover, .amt-btn.amt-selected {
+    background: rgba(245,166,35,0.15);
+    border-color: var(--amber-dim);
+    color: var(--amber);
+  }
+  .grant-row {
+    display:flex; align-items:center; gap:10px;
+    font-size:11px;
+  }
+  .grant-check { font-size:14px; width:18px; flex-shrink:0; }
+  .grant-check.green { color:var(--green); }
+  .grant-check.amber { color:var(--amber); }
+  .grant-label { flex:1; color:var(--text); }
+  .grant-status {
+    font-size:9px; font-weight:700; letter-spacing:1.5px;
+    padding:2px 6px; border-radius:3px;
+    text-transform:uppercase;
+  }
+  .grant-status.done    { background:rgba(74,222,128,0.12); color:var(--green); border:1px solid rgba(74,222,128,0.25); }
+  .grant-status.pending { background:rgba(245,166,35,0.12); color:var(--amber); border:1px solid var(--amber-dim); }
+</style>
 
 <script>
 // ── Simulation data (replace with real Redis/WebSocket feed in prod) ──
@@ -506,7 +594,7 @@ const CASTES = [
   { name: "SENTIMENT", weight: 0.10 },
 ];
 
-const TOKENS = ["BRETT", "DEGEN"];
+const TOKENS = ["BRETT", "AERO", "VIRTUAL", "WETH", "cbBTC"];
 
 let cycle       = 0;
 let tradeCount  = 0;
@@ -685,6 +773,37 @@ function simulateCycle() {
   }
 }
 
+
+// ── Onramp ─────────────────────────────────────────────────────────────
+let selectedAmount = 250;
+
+function setAmount(val) {
+  selectedAmount = val;
+  document.querySelectorAll('.amt-btn').forEach(b => {
+    b.classList.toggle('amt-selected', b.textContent === '$' + val);
+  });
+}
+
+function openOnramp() {
+  const addr = document.getElementById('onramp-address').value.trim();
+  if (!addr || !addr.startsWith('0x')) {
+    alert('Please enter your treasury wallet address (starts with 0x)');
+    return;
+  }
+  // Replace YOUR_CDP_PROJECT_ID with your actual project ID from the CDP portal
+  const projectId = 'YOUR_CDP_PROJECT_ID';
+  const addresses = encodeURIComponent(JSON.stringify({ [addr]: ['base'] }));
+  const assets    = encodeURIComponent(JSON.stringify(['USDC']));
+  const url = 'https://pay.coinbase.com/buy?appId=' + projectId
+    + '&addresses=' + addresses
+    + '&assets=' + assets
+    + '&defaultAsset=USDC'
+    + '&defaultNetwork=base'
+    + '&presetFiatAmount=' + selectedAmount;
+  window.open(url, '_blank', 'width=480,height=700,scrollbars=yes');
+  log('Onramp opened — funding $' + selectedAmount + ' USDC to ' + addr.slice(0,10) + '...', 'info');
+}
+
 // ── Boot ──────────────────────────────────────────────────────────────
 spawnAnts();
 updateClock();
@@ -698,36 +817,6 @@ setTimeout(() => log('Swarm initialized — 5 castes active', 'info'), 2400);
 // Start simulation cycles
 setTimeout(() => simulateCycle(), 3000);
 setInterval(simulateCycle, 8000);
-
-// ── Coinbase Onramp Integration ───────────────────────────────────────
-function openOnramp() {
-  // Treasury wallet address (replace with your actual treasury address from .env)
-  const treasuryAddress = 'YOUR_TREASURY_ADDRESS_HERE';
-  
-  // Coinbase Onramp URL with parameters
-  const onrampURL = new URL('https://pay.coinbase.com/buy/select-asset');
-  onrampURL.searchParams.append('appId', 'ant-colony-finance');
-  onrampURL.searchParams.append('destinationWallets', JSON.stringify([{
-    address: treasuryAddress,
-    blockchains: ['base'],
-    assets: ['ETH', 'USDC']
-  }]));
-  onrampURL.searchParams.append('defaultNetwork', 'base');
-  
-  // Open in new window
-  const width = 500;
-  const height = 700;
-  const left = (screen.width - width) / 2;
-  const top = (screen.height - height) / 2;
-  
-  window.open(
-    onrampURL.toString(),
-    'CoinbaseOnramp',
-    `width=${width},height=${height},left=${left},top=${top},resizable=yes,scrollbars=yes`
-  );
-  
-  log('💰 Onramp widget opened — fund colony treasury', 'info');
-}
 </script>
 </body>
 </html>
