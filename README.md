@@ -79,9 +79,23 @@ docker run -d -p 6379:6379 redis:alpine
 ### 4. Deploy the smart contract
 
 ```bash
+# Install Hardhat dependencies (one-time, needs Node 18+)
 cd contracts/
-# Using Hardhat or Foundry — deploy AntColonyFinance.sol to Base
-# Then set COLONY_CONTRACT_ADDRESS in .env
+npm install
+
+# Add to your .env (in the root directory):
+# BASESCAN_API_KEY=your_key_here  ← free from basescan.org/register
+
+# Compile the contract
+npx hardhat compile
+
+# Deploy to Base mainnet
+npx hardhat run scripts/deploy.js --network base
+
+# Deploy to Base Sepolia testnet (for testing)
+npx hardhat run scripts/deploy.js --network baseSepolia
+
+# Copy the deployed address to your .env as COLONY_CONTRACT_ADDRESS
 ```
 
 ### 5. Run the colony
